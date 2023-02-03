@@ -1,4 +1,4 @@
-using LinearAlgebra
+using MKL, LinearAlgebra
 using JuMP, Ipopt 
 using Plots
 
