@@ -1,6 +1,5 @@
 using LinearAlgebra
-using JuMP, Ipopt 
-using Plots
+using JuMP, Ipopt
 
 include("./kernels.jl")
 
