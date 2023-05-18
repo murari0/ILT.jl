@@ -38,6 +38,3 @@ function lcurve(t, y, r, logα_min, logα_max, Nα, solveropts::Pair...; fn::Ker
     norms = [norm(r[2]) for r in result]
     (residuals, norms, alphas)
 end
-
-t = [1E-4, 0.01, 0.05, 0.1, 0.25, 0.4, 1, 2, 4, 8, 16, 30, 45, 60]
-y = [-0.9877, -0.9675, -0.8528, -0.7522, -0.4481, -0.217, 0.3236, 0.6201, 0.7275, 0.8054, 0.8883, 0.9491, 1, 0.993]
