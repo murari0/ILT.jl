@@ -1,33 +1,42 @@
 using LinearAlgebra
-using JuMP, Ipopt 
-using Plots
+using JuMP, Ipopt
 
 include("./kernels.jl")
 
-function ilt(t, y, logr_min, logr_max, N; α = 1, fn::KernelFunction = t1ir())
+function ilt(t, y, logr_min, logr_max, N, solveropts::Pair...; α = 1.0, fn::KernelFunction = t1ir())
+    r = exp10.(range(logr_min,logr_max,length=N))
+    ilt(t,y,r,solveropts...;α,fn)
+end
 
-    r = exp10.(range(logr_min, logr_max, length=N))
-    # y-offset
-    push!(r, 0)
+function ilt(t, y, r, solveropts::Pair...; α = 1.0, fn::KernelFunction = t1ir())
+    N = length(r)
+    r = [0.0; r]
 
-    # Populate kernel matrix
     A = fn.(t,r')
-
-    # Add rows for regularisation
-    R = α*I(N+1)
-    R[end] = 0;
-    AR = vcat(A, R)
-    yR = vcat(y, zeros(N+1,1))
+    Areg = vcat(A, α*I(N+1))
+    yreg = vcat(y, zeros(N+1,1))
 
     model = Model(Ipopt.Optimizer)
+    if !isempty(solveropts)
+        set_attributes(model, solveropts...);
+    end
     set_silent(model)
     @variable(model,x[1:N+1])
     @constraint(model, [i=1:N], x[i] >=0);
-    @objective(model, Min, sum((AR*x-yR).^2))
+    @objective(model, Min, sum((Areg*x-yreg).^2))
     optimize!(model)
+
     F = value.(x)[1:N+1]
     residual = norm(A*F-y)
     return (r,F,residual)
+end
+
+function lcurve(t, y, r, logα_min, logα_max, Nα, solveropts::Pair...; fn::KernelFunction = t1ir())
+    alphas = exp10.(range(logα_min,logα_max,length=Nα))
+    result = [ilt(t,y,r,solveropts...;α=a,fn) for a in alphas]
+    residuals = [r[3] for r in result]
+    norms = [norm(r[2]) for r in result]
+    (residuals, norms, alphas)
 end
 
 t = [1E-4, 0.01, 0.05, 0.1, 0.25, 0.4, 1, 2, 4, 8, 16, 30, 45, 60]
