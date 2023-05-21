@@ -1,3 +1,5 @@
+module ILT
+
 using LinearAlgebra
 using JuMP, Ipopt
 
@@ -37,4 +39,6 @@ function lcurve(t, y, r, logα_min, logα_max, Nα, solveropts::Pair...; fn::Ker
     residuals = [r[3] for r in result]
     norms = [norm(r[2]) for r in result]
     (residuals, norms, alphas)
+end
+
 end
