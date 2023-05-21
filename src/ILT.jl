@@ -6,6 +6,12 @@ using JuMP, Ipopt
 include("./kernels.jl")
 include("./utils.jl")
 
+export
+    ilt,
+    lcurve,
+    read_bruker_p2d,
+    read_2d!
+
 function ilt(t, y, logr_min, logr_max, N, solveropts::Pair...; α = 1.0, fn::KernelFunction = t1ir())
     r = exp10.(range(logr_min,logr_max,length=N))
     ilt(t,y,r,solveropts...;α,fn)
