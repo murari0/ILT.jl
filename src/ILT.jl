@@ -31,7 +31,7 @@ function ilt(t, y, r, solveropts::Pair...; α = 1.0, fn::KernelFunction = t1ir()
     end
     set_silent(model)
     @variable(model,x[1:N+1])
-    @constraint(model, [i=1:N], x[i] >=0);
+    @constraint(model, [i=2:N+1], x[i] >=0);
     @objective(model, Min, sum((Areg*x-yreg).^2))
     optimize!(model)
 
