@@ -6,7 +6,7 @@ Abstract supertype to represent exponential relaxation/recovery functions for us
 Extended by singleton subtypes, each of which defines the functional form it represents as a functor. The current set of subtypes are:
 - `InversionRecovery`, aliased as `t1ir`
 - `SaturationRecovery`, aliased as `t1sr`
-- `TransverseRelaxation1, aliased as `t2`
+- `TransverseRelaxation`, aliased as `t2`
 As these symbols are not exported, they must be referenced as `ILT.t1ir()` etc.
 """
 abstract type KernelFunction end
