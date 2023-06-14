@@ -2,6 +2,11 @@ using ILT
 using Plots
 using LaTeXStrings
 
+"""
+    demo_1dilt()
+
+Performs an ILT including L-Curve optimisation of the Tikhonov regularisation parameter `α` on a predefined sample dataset.
+"""
 function demo_1dilt()
     t = [1E-4, 0.01, 0.05, 0.1, 0.25, 0.4, 1, 2, 4, 8, 16, 30, 45, 60]
     y = [-0.9877, -0.9675, -0.8528, -0.7522, -0.4481, -0.217, 0.3236, 0.6201, 0.7275, 0.8054, 0.8883, 0.9491, 1, 0.993]
@@ -19,6 +24,19 @@ function demo_1dilt()
     plot(p1, p2, layout=(1,2))
 end
 
+"""
+    demo_iltft(data, t, f, α; multithreaded = false, lsolver = "")
+
+Performs an ILT on each frequency point of a pseudo 2-dimensional relaxation dataset provided as a matrix in `data` and plots the resulting mixed ILT-FT as a contour map.
+
+# Arguments
+- `data`: 2-dimensional matrix holding the Fourier transformed dataset. The number of rows is the number of time steps in the relaxation experiment and the number of columns is the size of each spectrum
+- `t`: Vector of time steps used in the relaxation experiment
+- `f`: Frequency axis
+- `α`: Tikhonov regularisation parameter
+- `multithreaded`: Keyword boolean argument to instruct the function to compute ILTs in parallel across the f2 dimension
+- `lsolver`: Specifies which linear solver to use. Passed through to Ipopt
+"""
 function demo_iltft(data::Array{Float64,2}, t::Vector{Float64}, f::Vector{Float64}, α::Float64; multithreaded = false, lsolver = "")
     if size(data) != (length(t), length(f))
         throw(DimensionMismatch("Length of delay list and/or frequency axis does not match data"))
