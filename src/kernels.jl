@@ -7,6 +7,7 @@ Extended by singleton subtypes, each of which defines the functional form it rep
 - `InversionRecovery`, aliased as `t1ir`
 - `SaturationRecovery`, aliased as `t1sr`
 - `TransverseRelaxation1, aliased as `t2`
+As these symbols are not exported, they must be referenced as `ILT.t1ir()` etc.
 """
 abstract type KernelFunction end
 
