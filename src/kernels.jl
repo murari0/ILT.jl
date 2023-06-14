@@ -1,3 +1,13 @@
+"""
+    KernelFunction
+
+Abstract supertype to represent exponential relaxation/recovery functions for use in ILT.
+
+Extended by singleton subtypes, each of which defines the functional form it represents as a functor. The current set of subtypes are:
+- `InversionRecovery`, aliased as `t1ir`
+- `SaturationRecovery`, aliased as `t1sr`
+- `TransverseRelaxation1, aliased as `t2`
+"""
 abstract type KernelFunction end
 
 struct InversionRecovery <: KernelFunction end
