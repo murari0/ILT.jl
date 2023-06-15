@@ -17,7 +17,7 @@ function demo_1dilt()
     p1 = scatter(residuals, norms, series_annotations=ann, title="L-Curve", xaxis=(L"\textrm{Residuals\quad}(||A*F(α) - y||^2)", :log), yaxis=(L"\textrm{Solution norms\quad}(||F(α)||^2)", :log), legend=false)
 
     (r_res, F, ) = ilt(t,y,r,α=alphas[9])
-    t1s = reverse(1./r_res[2:end])
+    t1s = reverse(1 ./r_res[2:end])
     a = round(alphas[9],digits=2)
     p2 = plot(t1s, reverse(F[2:end]), title="Inverse Laplace Transform, α = $a", xaxis=(L"T_1\ (\mathrm{s})",:log), yaxis=(L"\textrm{Intensity (arb)}"), legend=false)
 
